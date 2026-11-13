@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIXELKILLER - Periféricos Gamer</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            cyan: '#ff2438',
+                            orange: '#c90020',
+                            dark: '#09090d',
+                            card: '#15151c',
+                            border: '#1e293b',
+                            accent: '#211017'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #09090d;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+
+        /* Ambient glowing effects */
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(255, 36, 56, 0.35);
+        }
+        .glow-orange {
+            box-shadow: 0 0 20px rgba(201, 0, 32, 0.35);
+        }
+        .text-glow-cyan {
+            text-shadow: 0 0 10px rgba(255, 36, 56, 0.6);
+        }
+        .text-glow-orange {
+            text-shadow: 0 0 10px rgba(255, 107, 0, 0.6);
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(18, 18, 24, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #09090d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff2438;
+        }
+
+        .gradient-border-bottom {
+            border-bottom: 2px solid;
+            border-image: linear-gradient(to right, #ff2438, #c90020) 1;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-cyber-cyan selection:text-black">
+
+    <!-- TOP ANNOUNCEMENT BAR -->
+    <div class="bg-gradient-to-r from-cyber-cyan via-red-600 to-cyber-orange text-black text-xs font-bold py-1.5 px-4 text-center tracking-wider uppercase flex items-center justify-center gap-2">
+        <span><i class="fa-solid fa-bolt"></i> Envíos gratis a todo el país por compras sobre $50.000</span>
+        <span class="hidden md:inline">•</span>
+        <span class="hidden md:inline">HASTA 12 CUOTAS SIN INTERÉS</span>
+    </div>
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-gray-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20 gap-4">
+                
+                <!-- BRAND LOGO -->
+                <a href="#" class="flex items-center gap-3 group shrink-0">
+                    <!-- Logo oficial PIXELKILLER -->
+                    <div class="w-14 h-14 rounded-xl overflow-hidden border border-red-600/60 shadow-lg shadow-red-600/20 transition-transform duration-300 group-hover:scale-105 shrink-0">
+                        <img src="assets/logo.png" alt="Logo oficial de PIXELKILLER" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-black tracking-wider leading-none text-white font-mono">
+                            PIXEL<span class="text-cyber-cyan">KILLER</span>
+                        </span>
+                        <span class="text-[10px] font-bold text-cyber-orange tracking-widest uppercase">Periféricos Gamer</span>
+                    </div>
+                </a>
+
+                <!-- SEARCH BAR (DESKTOP) -->
+                <div class="hidden md:flex flex-1 max-w-md mx-4">
+                    <div class="relative w-full">
+                        <input type="text" id="searchInput" placeholder="Buscar mouses, teclados, audífonos..." 
+                            class="w-full bg-cyber-dark/80 border border-gray-700/80 rounded-xl py-2.5 pl-10 pr-4 text-sm text-gray-200 placeholder-gray-400 focus:outline-none focus:border-cyber-cyan focus:ring-1 focus:ring-cyber-cyan transition-all">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-gray-400 text-sm"></i>
+                    </div>
+                </div>
+
+                <!-- NAV & CART ACTIONS -->
+                <div class="flex items-center gap-3 sm:gap-5">
+                    <button id="mobileSearchBtn" class="md:hidden text-gray-300 hover:text-cyber-cyan p-2">
+                        <i class="fa-solid fa-magnifying-glass text-xl"></i>
+                    </button>
+
+                    <a href="#catalog" class="hidden sm:flex items-center gap-2 text-sm font-semibold text-gray-300 hover:text-cyber-cyan transition-colors">
+                        <i class="fa-solid fa-gamepad text-cyber-orange"></i> Catálogo
+                    </a>
+
+                    <!-- CART BUTTON -->
+                    <button id="openCartBtn" class="relative bg-cyber-accent hover:bg-gray-800 border border-gray-700 text-white p-2.5 sm:px-4 sm:py-2.5 rounded-xl flex items-center gap-3 transition-all duration-300 hover:border-cyber-cyan group">
+                        <div class="relative">
+                            <i class="fa-solid fa-cart-shopping text-lg text-cyber-cyan group-hover:scale-110 transition-transform"></i>
+                            <span id="cartBadge" class="absolute -top-2.5 -right-3 bg-cyber-orange text-black font-extrabold text-[11px] w-5 h-5 rounded-full flex items-center justify-center shadow-lg">0</span>
+                        </div>
+                        <span class="hidden sm:inline font-bold text-sm" id="cartTotalHeader">$0</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- MOBILE SEARCH INPUT (HIDDEN BY DEFAULT) -->
+            <div id="mobileSearchContainer" class="hidden pb-4 md:hidden">
+                <div class="relative w-full">
+                    <input type="text" id="mobileSearchInput" placeholder="Buscar periféricos..." 
+                        class="w-full bg-cyber-dark border border-gray-700 rounded-xl py-2 pl-10 pr-4 text-sm text-gray-200 focus:border-cyber-cyan focus:outline-none">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-gray-400 text-sm"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- HERO SECTION -->
+        <section class="relative overflow-hidden py-12 md:py-20 border-b border-gray-800/60 bg-gradient-to-b from-cyber-dark via-cyber-card to-cyber-dark">
+            <div class="absolute -top-32 -left-32 w-96 h-96 bg-cyber-cyan/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-cyber-orange/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    
+                    <!-- HERO TEXT -->
+                    <div class="space-y-6 text-center lg:text-left">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyber-cyan/10 border border-cyber-cyan/30 text-cyber-cyan text-xs font-bold tracking-wider uppercase">
+                            <span class="w-2 h-2 rounded-full bg-cyber-cyan animate-pulse"></span>
+                            Equipamiento de Grado E-Sports
+                        </div>
+
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight">
+                            DOMINA EL JUEGO CON <br class="hidden sm:inline">
+                            <span class="bg-gradient-to-r from-cyber-cyan via-red-500 to-cyber-orange bg-clip-text text-transparent">
+                                PRECISIÓN ABSOLUTA
+                            </span>
+                        </h1>
+
+                        <p class="text-gray-400 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 font-normal">
+                            Elevamos tu nivel competitivo. Mouses ultra ligeros, teclados mecánicos personalizados y audífonos con audio posicional 7.1.
+                        </p>
+
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
+                            <a href="#catalog" class="px-8 py-4 rounded-xl bg-gradient-to-r from-cyber-cyan to-red-700 text-black font-extrabold uppercase text-sm tracking-wider shadow-lg shadow-cyber-cyan/25 hover:shadow-cyber-cyan/50 hover:scale-105 transition-all duration-300 text-center">
+                                Explorar Catálogo <i class="fa-solid fa-arrow-right ml-2"></i>
+                            </a>
+                            <a href="#featured" class="px-8 py-4 rounded-xl bg-cyber-card border border-gray-700 text-white font-bold text-sm tracking-wider hover:border-cyber-orange hover:text-cyber-orange transition-all duration-300 text-center">
+                                Destacados del Mes
+                            </a>
+                        </div>
+
+                        <!-- TRUST BADGES -->
+                        <div class="pt-6 grid grid-cols-3 gap-4 border-t border-gray-800/80 text-center lg:text-left">
+                            <div>
+                                <h4 class="text-white font-bold text-lg">100%</h4>
+                                <p class="text-gray-400 text-xs">Garantía Oficial</p>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg">&lt; 24 Hrs</h4>
+                                <p class="text-gray-400 text-xs">Despacho Rápido</p>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg">+10k</h4>
+                                <p class="text-gray-400 text-xs">Gamers Satisfechos</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HERO BANNER GRAPHIC -->
+                    <div class="relative flex justify-center">
+                        <div class="relative w-full max-w-md bg-gradient-to-tr from-cyber-cyan/20 to-cyber-orange/20 p-1 rounded-3xl glow-cyan">
+                            <div class="bg-cyber-dark p-6 rounded-[22px] overflow-hidden relative">
+                                <div class="absolute top-4 right-4 bg-cyber-orange text-black font-black text-xs px-3 py-1 rounded-full uppercase">
+                                    TOP SALES
+                                </div>
+                                
+                                <img src="https://placehold.co/600x450/121824/00e5ff?text=Viper+Pro+Wireless+RGB" 
+                                     alt="Mouse Flagship" 
+                                     class="w-full h-64 object-contain my-4 hover:scale-105 transition-transform duration-500">
+
+                                <div class="space-y-2">
+                                    <div class="flex items-center gap-1 text-cyber-orange text-xs">
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <span class="text-gray-400 ml-1">(4.9/5.0)</span>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-white">GamerGear Apex Ultra Wireless</h3>
+                                    <p class="text-xs text-gray-400">Sensor PAW3395 26K DPI • 49g Ultraligero • Switch Óptico</p>
+                                    <div class="flex items-center justify-between pt-3">
+                                        <span class="text-2xl font-black text-cyber-cyan">$69.990</span>
+                                        <button onclick="addToCart(1)" class="bg-cyber-orange hover:bg-red-800 text-black font-extrabold px-4 py-2 rounded-lg text-xs uppercase transition-colors">
+                                            <i class="fa-solid fa-cart-plus mr-1"></i> Añadir
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- CATALOG SECTION -->
+        <section id="catalog" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- SECTION HEADING & FILTERS -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+                <div>
+                    <h2 class="text-3xl font-black text-white tracking-tight uppercase">
+                        Catálogo de <span class="text-cyber-cyan">Productos</span>
+                    </h2>
+                    <p class="text-gray-400 text-sm mt-1">Filtra por tu categoría favorita y arma tu Setup Soñado.</p>
+                </div>
+
+                <!-- CATEGORY BUTTONS -->
+                <div class="flex flex-wrap gap-2" id="categoryFilters">
+                    <button data-category="all" class="filter-btn active px-4 py-2 rounded-xl text-xs font-bold uppercase transition-all bg-cyber-cyan text-black shadow-md shadow-cyber-cyan/30">
+                        Todos
+                    </button>
+                    <button data-category="mouses" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase transition-all bg-cyber-card text-gray-300 border border-gray-700 hover:border-cyber-cyan hover:text-white">
+                        <i class="fa-solid fa-mouse mr-1"></i> Mouses
+                    </button>
+                    <button data-category="teclados" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase transition-all bg-cyber-card text-gray-300 border border-gray-700 hover:border-cyber-cyan hover:text-white">
+                        <i class="fa-solid fa-keyboard mr-1"></i> Teclados
+                    </button>
+                    <button data-category="audifonos" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase transition-all bg-cyber-card text-gray-300 border border-gray-700 hover:border-cyber-cyan hover:text-white">
+                        <i class="fa-solid fa-headset mr-1"></i> Audífonos
+                    </button>
+                    <button data-category="accesorios" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase transition-all bg-cyber-card text-gray-300 border border-gray-700 hover:border-cyber-cyan hover:text-white">
+                        <i class="fa-solid fa-rug mr-1"></i> Mousepads
+                    </button>
+                </div>
+            </div>
+
+            <!-- PRODUCT GRID -->
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Products will be injected by JavaScript -->
+            </div>
+
+            <!-- EMPTY STATE SEARCH -->
+            <div id="noResults" class="hidden text-center py-16">
+                <i class="fa-solid fa-ghost text-5xl text-gray-600 mb-4"></i>
+                <h3 class="text-xl font-bold text-gray-300">No encontramos periféricos</h3>
+                <p class="text-gray-500 text-sm mt-1">Intenta buscar otro término o cambiar el filtro de categoría.</p>
+            </div>
+        </section>
+
+        <!-- SETUP GUARANTEE / FEATURES -->
+        <section class="bg-cyber-card/60 border-y border-gray-800/80 py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="p-6 rounded-2xl bg-cyber-dark/60 border border-gray-800 hover:border-cyber-cyan transition-colors">
+                        <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-cyber-cyan/10 flex items-center justify-center text-cyber-cyan text-2xl">
+                            <i class="fa-solid fa-truck-fast"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Envío Express Seguro</h3>
+                        <p class="text-sm text-gray-400">Despachos rápidos y con número de seguimiento en tiempo real.</p>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-cyber-dark/60 border border-gray-800 hover:border-cyber-orange transition-colors">
+                        <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-cyber-orange/10 flex items-center justify-center text-cyber-orange text-2xl">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Garantía Pro 12 Meses</h3>
+                        <p class="text-sm text-gray-400">Reemplazo directo ante fallas de fábrica sin trámites tediosos.</p>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-cyber-dark/60 border border-gray-800 hover:border-cyber-cyan transition-colors">
+                        <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-cyber-cyan/10 flex items-center justify-center text-cyber-cyan text-2xl">
+                            <i class="fa-solid fa-headset"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Soporte Gamer 24/7</h3>
+                        <p class="text-sm text-gray-400">Atención personalizada por gamers para ayudarte en tu compra.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-cyber-dark border-t border-gray-800 text-gray-400 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl font-black text-white font-mono">PIXEL<span class="text-cyber-cyan">KILLER</span></span>
+                    </div>
+                    <p class="text-xs text-gray-400">Tu tienda especializada en periféricos de alto rendimiento para jugadores exigentes y competidores de e-sports.</p>
+                    <div class="flex gap-3 text-lg">
+                        <a href="#" class="w-9 h-9 rounded-lg bg-cyber-card flex items-center justify-center hover:text-cyber-cyan hover:bg-gray-800 transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-lg bg-cyber-card flex items-center justify-center hover:text-cyber-cyan hover:bg-gray-800 transition-colors"><i class="fa-brands fa-discord"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-lg bg-cyber-card flex items-center justify-center hover:text-cyber-cyan hover:bg-gray-800 transition-colors"><i class="fa-brands fa-twitch"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-lg bg-cyber-card flex items-center justify-center hover:text-cyber-cyan hover:bg-gray-800 transition-colors"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-wider">Categorías</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#catalog" class="hover:text-cyber-cyan transition-colors">Mouses Ultraligeros</a></li>
+                        <li><a href="#catalog" class="hover:text-cyber-cyan transition-colors">Teclados Mecánicos 60% & TKL</a></li>
+                        <li><a href="#catalog" class="hover:text-cyber-cyan transition-colors">Audífonos Surround 7.1</a></li>
+                        <li><a href="#catalog" class="hover:text-cyber-cyan transition-colors">Mousepads Control & Speed</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-wider">Servicio al Cliente</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#" class="hover:text-cyber-cyan transition-colors">Seguimiento de Pedido</a></li>
+                        <li><a href="#" class="hover:text-cyber-cyan transition-colors">Políticas de Garantía</a></li>
+                        <li><a href="#" class="hover:text-cyber-cyan transition-colors">Preguntas Frecuentes (FAQ)</a></li>
+                        <li><a href="#" class="hover:text-cyber-cyan transition-colors">Términos y Condiciones</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-wider">Métodos de Pago</h4>
+                    <p class="text-xs text-gray-400 mb-3">Aceptamos todas las tarjetas de crédito y transferencias bancarias.</p>
+                    <div class="flex flex-wrap gap-2 text-gray-400 text-2xl">
+                        <i class="fa-brands fa-cc-visa hover:text-white"></i>
+                        <i class="fa-brands fa-cc-mastercard hover:text-white"></i>
+                        <i class="fa-brands fa-cc-paypal hover:text-white"></i>
+                        <i class="fa-solid fa-credit-card hover:text-white"></i>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-8 border-t border-gray-800/80 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 gap-4">
+                <p>&copy; 2026 GamerGear Chile. Todos los derechos reservados.</p>
+                <p>Diseñado para e-Sports & Gamers de Alto Nivel.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- CART SLIDE-OVER DRAWER -->
+    <div id="cartDrawerBackdrop" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300"></div>
+
+    <aside id="cartDrawer" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-cyber-card border-l border-gray-800 z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
+        <!-- Cart Header -->
+        <div class="p-5 border-b border-gray-800 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-cart-shopping text-cyber-cyan"></i>
+                <h3 class="font-bold text-white uppercase tracking-wider text-sm">Tu Carrito de Compras</h3>
+            </div>
+            <button id="closeCartBtn" class="text-gray-400 hover:text-white p-1">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Cart Items List -->
+        <div id="cartItemsContainer" class="p-5 flex-1 overflow-y-auto space-y-4">
+            <!-- Dynamic Cart Items -->
+        </div>
+
+        <!-- Cart Footer -->
+        <div class="p-5 border-t border-gray-800 bg-cyber-dark/80 space-y-4">
+            <div class="space-y-1.5 text-sm">
+                <div class="flex justify-between text-gray-400">
+                    <span>Subtotal</span>
+                    <span id="cartSubtotal">$0</span>
+                </div>
+                <div class="flex justify-between text-gray-400">
+                    <span>Envío</span>
+                    <span id="cartShipping" class="text-cyber-cyan font-semibold">Calculado al pagar</span>
+                </div>
+                <div class="flex justify-between text-white font-extrabold text-lg pt-2 border-t border-gray-800">
+                    <span>Total</span>
+                    <span id="cartTotal" class="text-cyber-orange">$0</span>
+                </div>
+            </div>
+
+            <button id="checkoutBtn" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyber-cyan to-red-700 text-black font-extrabold uppercase text-sm tracking-wider shadow-lg shadow-cyber-cyan/20 hover:scale-[1.02] transition-transform">
+                Procesar Pago <i class="fa-solid fa-arrow-right ml-1"></i>
+            </button>
+            <button id="clearCartBtn" class="w-full py-2 text-xs font-bold text-gray-400 hover:text-red-400 transition-colors">
+                Vaciar Carrito
+            </button>
+        </div>
+    </aside>
+
+    <!-- QUICK VIEW MODAL -->
+    <div id="quickViewModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden items-center justify-center p-4">
+        <div class="bg-cyber-card border border-gray-700 w-full max-w-2xl rounded-2xl overflow-hidden relative shadow-2xl animate-fade-in">
+            <button id="closeModalBtn" class="absolute top-4 right-4 text-gray-400 hover:text-white z-10 bg-cyber-dark/80 rounded-full w-8 h-8 flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="grid grid-cols-1 md:grid-cols-2" id="modalContent">
+                <!-- Modal content will be populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION TOAST -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-cyber-card border border-cyber-cyan text-white px-5 py-3 rounded-xl shadow-2xl z-50 hidden items-center gap-3 transform translate-y-10 transition-all duration-300">
+        <i class="fa-solid fa-circle-check text-cyber-cyan text-lg"></i>
+        <span id="toastMessage" class="text-sm font-semibold">Producto añadido al carrito</span>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // PRODUCTS DATABASE
+        const products = [
+            {
+                id: 1,
+                name: "GamerGear Apex Ultra Wireless",
+                category: "mouses",
+                price: 69990,
+                oldPrice: 84990,
+                rating: 5,
+                reviews: 42,
+                image: "https://placehold.co/500x500/121824/00e5ff?text=Apex+Ultra+Mouse",
+                specs: "Sensor 26K DPI • 49g • Switches Ópticos",
+                description: "Mouse ultraligero de grado competitivo. Diseñado con ergonomía perfeccionada para agarre tipo claw y fingertip. Autonomía de hasta 80 horas de juego continuo."
+            },
+            {
+                id: 2,
+                name: "GamerGear Titan 65% Custom RGB",
+                category: "teclados",
+                price: 89990,
+                oldPrice: 109990,
+                rating: 5,
+                reviews: 58,
+                image: "https://placehold.co/500x500/121824/ff6b00?text=Titan+65+Keyboard",
+                specs: "Switches Gateron Yellow • Hotswap • PBT Keycaps",
+                description: "Teclado mecánico compacto 65%. Placa de aluminio con amortiguación de sonido de silicona y switches lubricados de fábrica para una sensación de tipeo acústica premium."
+            },
+            {
+                id: 3,
+                name: "GamerGear SoundBlast Pro 7.1",
+                category: "audifonos",
+                price: 54990,
+                oldPrice: 64990,
+                rating: 4,
+                reviews: 31,
+                image: "https://placehold.co/500x500/121824/00e5ff?text=SoundBlast+7.1",
+                specs: "Drivers 53mm • Audio 7.1 • Micrófono Cancelación",
+                description: "Audífonos e-sports inalámbricos de latencia ultrabaja. Almohadillas de espuma viscoelástica respirable para maratones de juego sin fatiga."
+            },
+            {
+                id: 4,
+                name: "GamerGear Stealth Speed Pad XL",
+                category: "accesorios",
+                price: 24990,
+                oldPrice: 29990,
+                rating: 5,
+                reviews: 19,
+                image: "https://placehold.co/500x500/121824/ff6b00?text=Stealth+Speed+XL",
+                specs: "900x400mm • Superficie Micro-Tejida • Base Antideslizante",
+                description: "Mousepad tamaño escritorio con bordes cosidos reforzados. Glide ultrasuave optimizado tanto para sensores ópticos como láser."
+            },
+            {
+                id: 5,
+                name: "GamerGear Phantom Wireless 8K",
+                category: "mouses",
+                price: 59990,
+                oldPrice: 69990,
+                rating: 4,
+                reviews: 27,
+                image: "https://placehold.co/500x500/121824/00e5ff?text=Phantom+8K+Mouse",
+                specs: "Polling Rate 8000Hz • 54g • RGB Personalizable",
+                description: "Tasa de sondeo pura de 8000Hz para la menor latencia de entrada del mercado. Ideal para shooters de ritmo rápido como Valorant y CS2."
+            },
+            {
+                id: 6,
+                name: "GamerGear Spark TKL Mechanical",
+                category: "teclados",
+                price: 64990,
+                oldPrice: 79990,
+                rating: 5,
+                reviews: 36,
+                image: "https://placehold.co/500x500/121824/ff6b00?text=Spark+TKL+Keyboard",
+                specs: "Switches Red Lineales • Estructura Gasket • RGB Per-Key",
+                description: "Diseño Tenkeyless (TKL) que libera espacio en tu escritorio para amplios movimientos de mouse. Incluye software dedicado de macros."
+            },
+            {
+                id: 7,
+                name: "GamerGear Pulse Wireless Earbuds",
+                category: "audifonos",
+                price: 42990,
+                oldPrice: 49990,
+                rating: 4,
+                reviews: 15,
+                image: "https://placehold.co/500x500/121824/00e5ff?text=Pulse+Earbuds",
+                specs: "Modo Gaming 45ms • ANC Activo • 24h Batería",
+                description: "Audífonos in-ear inalámbricos para gaming móvil y PC. Cancelación activa de ruido y modo de latencia ultra baja."
+            },
+            {
+                id: 8,
+                name: "GamerGear Bungee Arm + Hub USB",
+                category: "accesorios",
+                price: 19990,
+                oldPrice: 24990,
+                rating: 5,
+                reviews: 22,
+                image: "https://placehold.co/500x500/121824/ff6b00?text=Bungee+Arm+Hub",
+                specs: "Resorte Flexible • Hub 4 Port USB 3.0 • Iluminación RGB",
+                description: "Bungee de mouse para eliminar el arrastre del cable. Integra un hub USB súper veloz para conectar tus periféricos."
+            }
+        ];
+
+        // STATE
+        let cart = JSON.parse(localStorage.getItem('gamergear_cart')) || [];
+        let activeCategory = 'all';
+        let searchQuery = '';
+
+        // DOM ELEMENTS
+        const productGrid = document.getElementById('productGrid');
+        const noResults = document.getElementById('noResults');
+        const cartDrawer = document.getElementById('cartDrawer');
+        const cartDrawerBackdrop = document.getElementById('cartDrawerBackdrop');
+        const openCartBtn = document.getElementById('openCartBtn');
+        const closeCartBtn = document.getElementById('closeCartBtn');
+        const cartBadge = document.getElementById('cartBadge');
+        const cartTotalHeader = document.getElementById('cartTotalHeader');
+        const cartItemsContainer = document.getElementById('cartItemsContainer');
+        const cartSubtotal = document.getElementById('cartSubtotal');
+        const cartTotal = document.getElementById('cartTotal');
+        const clearCartBtn = document.getElementById('clearCartBtn');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const searchInput = document.getElementById('searchInput');
+        const mobileSearchInput = document.getElementById('mobileSearchInput');
+        const mobileSearchBtn = document.getElementById('mobileSearchBtn');
+        const mobileSearchContainer = document.getElementById('mobileSearchContainer');
+        const quickViewModal = document.getElementById('quickViewModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalContent = document.getElementById('modalContent');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+
+        // FORMAT CURRENCY
+        function formatMoney(amount) {
+            return '$' + amount.toLocaleString('es-CL');
+        }
+
+        // RENDER PRODUCT CARDS
+        function renderProducts() {
+            productGrid.innerHTML = '';
+
+            const filtered = products.filter(p => {
+                const matchesCategory = activeCategory === 'all' || p.category === activeCategory;
+                const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      p.specs.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+
+            filtered.forEach(product => {
+                const card = document.createElement('div');
+                card.className = "bg-cyber-card border border-gray-800 rounded-2xl overflow-hidden hover:border-cyber-cyan/60 transition-all duration-300 flex flex-col group hover:shadow-xl hover:shadow-cyber-cyan/10";
+                
+                // Generating rating stars
+                let starsHTML = '';
+                for (let i = 0; i < 5; i++) {
+                    if (i < product.rating) {
+                        starsHTML += '<i class="fa-solid fa-star text-cyber-orange text-xs"></i>';
+                    } else {
+                        starsHTML += '<i class="fa-regular fa-star text-gray-600 text-xs"></i>';
+                    }
+                }
+
+                card.innerHTML = `
+                    <div class="relative bg-cyber-dark/80 p-4 flex items-center justify-center overflow-hidden cursor-pointer" onclick="openQuickView(${product.id})">
+                        ${product.oldPrice ? `<span class="absolute top-3 left-3 bg-cyber-orange/90 text-black font-extrabold text-[10px] uppercase px-2 py-0.5 rounded">OFERTA</span>` : ''}
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-contain group-hover:scale-105 transition-transform duration-500">
+                        <button onclick="event.stopPropagation(); openQuickView(${product.id})" class="absolute bottom-3 right-3 bg-cyber-card/80 hover:bg-cyber-cyan hover:text-black text-gray-300 text-xs font-bold px-2.5 py-1.5 rounded-lg border border-gray-700 transition-colors backdrop-blur-sm">
+                            <i class="fa-solid fa-eye mr-1"></i> Vista Rápida
+                        </button>
+                    </div>
+
+                    <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center gap-1.5 mb-1">
+                                ${starsHTML}
+                                <span class="text-[11px] text-gray-500 font-medium">(${product.reviews})</span>
+                            </div>
+                            <h3 class="font-bold text-white text-base group-hover:text-cyber-cyan transition-colors line-clamp-1">${product.name}</h3>
+                            <p class="text-xs text-gray-400 mt-1 line-clamp-2">${product.specs}</p>
+                        </div>
+
+                        <div class="pt-2 border-t border-gray-800/80 flex items-center justify-between">
+                            <div>
+                                <span class="text-lg font-black text-white block">${formatMoney(product.price)}</span>
+                                ${product.oldPrice ? `<span class="text-xs text-gray-500 line-through">${formatMoney(product.oldPrice)}</span>` : ''}
+                            </div>
+                            <button onclick="addToCart(${product.id})" class="bg-cyber-cyan/10 border border-cyber-cyan/40 hover:bg-cyber-cyan hover:text-black text-cyber-cyan font-bold p-2.5 rounded-xl transition-all duration-300 flex items-center justify-center">
+                                <i class="fa-solid fa-cart-plus text-base"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                productGrid.appendChild(card);
+            });
+        }
+
+        // FILTER EVENT LISTENERS
+        document.querySelectorAll('#categoryFilters button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('#categoryFilters button').forEach(b => {
+                    b.classList.remove('bg-cyber-cyan', 'text-black', 'shadow-md', 'shadow-cyber-cyan/30');
+                    b.classList.add('bg-cyber-card', 'text-gray-300', 'border', 'border-gray-700');
+                });
+                
+                const target = e.currentTarget;
+                target.classList.remove('bg-cyber-card', 'text-gray-300', 'border', 'border-gray-700');
+                target.classList.add('bg-cyber-cyan', 'text-black', 'shadow-md', 'shadow-cyber-cyan/30');
+
+                activeCategory = target.getAttribute('data-category');
+                renderProducts();
+            });
+        });
+
+        // SEARCH EVENT LISTENERS
+        function handleSearch(e) {
+            searchQuery = e.target.value;
+            renderProducts();
+        }
+        searchInput.addEventListener('input', handleSearch);
+        mobileSearchInput.addEventListener('input', handleSearch);
+
+        mobileSearchBtn.addEventListener('click', () => {
+            mobileSearchContainer.classList.toggle('hidden');
+        });
+
+        // CART LOGIC
+        function addToCart(productId, qty = 1) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const existingIndex = cart.findIndex(item => item.id === productId);
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += qty;
+            } else {
+                cart.push({ ...product, quantity: qty });
+            }
+
+            updateCart();
+            showToast(`Añadido: ${product.name}`);
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCart();
+        }
+
+        function changeQuantity(productId, delta) {
+            const index = cart.findIndex(item => item.id === productId);
+            if (index > -1) {
+                cart[index].quantity += delta;
+                if (cart[index].quantity <= 0) {
+                    cart.splice(index, 1);
+                }
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            localStorage.setItem('gamergear_cart', JSON.stringify(cart));
+            
+            // Total Items Count
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            cartBadge.textContent = count;
+
+            // Total Amount
+            const totalSum = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            cartTotalHeader.textContent = formatMoney(totalSum);
+            cartSubtotal.textContent = formatMoney(totalSum);
+            cartTotal.textContent = formatMoney(totalSum);
+
+            // Render Drawer Items
+            cartItemsContainer.innerHTML = '';
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="text-center py-12 text-gray-500 space-y-3">
+                        <i class="fa-solid fa-cart-flatbed text-4xl"></i>
+                        <p class="text-sm font-semibold">Tu carrito está vacío</p>
+                        <a href="#catalog" onclick="toggleCart(false)" class="inline-block text-xs text-cyber-cyan font-bold uppercase underline">Explorar catálogo</a>
+                    </div>
+                `;
+            } else {
+                cart.forEach(item => {
+                    const el = document.createElement('div');
+                    el.className = "flex items-center gap-3 p-3 bg-cyber-dark/90 rounded-xl border border-gray-800";
+                    el.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-contain rounded-lg bg-cyber-card">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-xs font-bold text-white truncate">${item.name}</h4>
+                            <span class="text-xs text-cyber-cyan font-black">${formatMoney(item.price)}</span>
+                            <div class="flex items-center gap-2 mt-2">
+                                <button onclick="changeQuantity(${item.id}, -1)" class="w-6 h-6 rounded bg-gray-800 text-gray-300 hover:bg-gray-700 flex items-center justify-center text-xs font-bold">-</button>
+                                <span class="text-xs font-bold text-white w-4 text-center">${item.quantity}</span>
+                                <button onclick="changeQuantity(${item.id}, 1)" class="w-6 h-6 rounded bg-gray-800 text-gray-300 hover:bg-gray-700 flex items-center justify-center text-xs font-bold">+</button>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" class="text-gray-500 hover:text-red-400 p-1">
+                            <i class="fa-solid fa-trash-can text-sm"></i>
+                        </button>
+                    `;
+                    cartItemsContainer.appendChild(el);
+                });
+            }
+        }
+
+        // TOGGLE CART DRAWER
+        function toggleCart(open) {
+            if (open) {
+                cartDrawerBackdrop.classList.remove('hidden');
+                setTimeout(() => {
+                    cartDrawerBackdrop.classList.remove('opacity-0');
+                    cartDrawer.classList.remove('translate-x-full');
+                }, 10);
+            } else {
+                cartDrawer.classList.add('translate-x-full');
+                cartDrawerBackdrop.classList.add('opacity-0');
+                setTimeout(() => {
+                    cartDrawerBackdrop.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        openCartBtn.addEventListener('click', () => toggleCart(true));
+        closeCartBtn.addEventListener('click', () => toggleCart(false));
+        cartDrawerBackdrop.addEventListener('click', () => toggleCart(false));
+
+        clearCartBtn.addEventListener('click', () => {
+            if(cart.length === 0) return;
+            cart = [];
+            updateCart();
+            showToast('Carrito vaciado');
+        });
+
+        checkoutBtn.addEventListener('click', () => {
+            if (cart.length === 0) {
+                showToast('Añade productos antes de pagar');
+                return;
+            }
+            alert('¡Gracias por tu compra simulada en GamerGear! En breve procesaremos tu pedido.');
+            cart = [];
+            updateCart();
+            toggleCart(false);
+        });
+
+        // QUICK VIEW MODAL
+        function openQuickView(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            modalContent.innerHTML = `
+                <div class="bg-cyber-dark p-6 flex items-center justify-center relative">
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-contain">
+                </div>
+                <div class="p-6 flex flex-col justify-between space-y-4">
+                    <div>
+                        <span class="text-xs font-bold text-cyber-orange uppercase tracking-wider">${product.category}</span>
+                        <h3 class="text-xl font-extrabold text-white mt-1">${product.name}</h3>
+                        <p class="text-xs text-cyber-cyan font-mono mt-1">${product.specs}</p>
+                        <p class="text-xs text-gray-400 mt-3 leading-relaxed">${product.description}</p>
+                    </div>
+
+                    <div class="space-y-4 pt-4 border-t border-gray-800">
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl font-black text-white">${formatMoney(product.price)}</span>
+                            ${product.oldPrice ? `<span class="text-xs text-gray-500 line-through">Antes ${formatMoney(product.oldPrice)}</span>` : ''}
+                        </div>
+                        <button onclick="addToCart(${product.id}); closeModal();" class="w-full py-3 bg-cyber-orange hover:bg-red-800 text-black font-extrabold uppercase text-xs rounded-xl tracking-wider transition-colors">
+                            <i class="fa-solid fa-cart-plus mr-2"></i> Añadir al Carrito
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            quickViewModal.classList.remove('hidden');
+            quickViewModal.classList.add('flex');
+        }
+
+        function closeModal() {
+            quickViewModal.classList.add('hidden');
+            quickViewModal.classList.remove('flex');
+        }
+
+        closeModalBtn.addEventListener('click', closeModal);
+        quickViewModal.addEventListener('click', (e) => {
+            if (e.target === quickViewModal) closeModal();
+        });
+
+        // TOAST NOTIFICATION
+        function showToast(message) {
+            toastMessage.textContent = message;
+            toast.classList.remove('hidden');
+            toast.classList.remove('translate-y-10');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-10');
+                setTimeout(() => toast.classList.add('hidden'), 300);
+            }, 2500);
+        }
+
+        // INITIAL RENDER
+        window.onload = function() {
+            renderProducts();
+            updateCart();
+        };
+    </script>
+</body>
+</html>
